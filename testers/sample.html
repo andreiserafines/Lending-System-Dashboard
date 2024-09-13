@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Drag and Drop Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #drop-zone {
+            width: 200px;
+            height: 200px;
+            border: 3px dashed #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem auto;
+            transition: all 0.3s ease;
+        }
+        #drop-zone.highlight {
+            border-color: #4CAF50;
+            background-color: #E8F5E9;
+        }
+        #image {
+            max-width: 100%;
+            max-height: 100%;
+            cursor: move;
+        }
+        #reset-btn {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #reset-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Welcome to GeeksforGeeks!</h1>
+        <p>Drag the image into the container</p>
+        <div id="drop-zone" ondrop="dropItem(event)" ondragover="allowDrop(event)"></div>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220428080551/gfglogo-200x200.png"
+            alt="GeeksforGeeks" id="image" draggable="true" ondragstart="dragStart(event)">
+        <br>
+        <button id="reset-btn" onclick="resetImage()">Reset</button>
+    </div>
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const image = document.getElementById('image');
+
+        function allowDrop(e) {
+            e.preventDefault();
+            dropZone.classList.add('highlight');
+        }
+
+        function dragStart(e) {
+            e.dataTransfer.setData("text/plain", e.target.id);
+        }
+
+        function dropItem(e) {
+            e.preventDefault();
+            dropZone.classList.remove('highlight');
+            const data = e.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            e.target.appendChild(draggedElement);
+        }
+
+        function resetImage() {
+            const container = document.getElementById('container');
+            container.appendChild(image);
+        }
+
+        dropZone.addEventListener('dragleave', function() {
+            dropZone.classList.remove('highlight');
+        });
+    </script>
+</body>
+</html>
